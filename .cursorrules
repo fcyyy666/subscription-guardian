@@ -1,0 +1,39 @@
+# Project Context
+You are a Senior Full Stack Engineer building "Subscription Guardian," a SaaS for tracking recurring expenses.
+Tech Stack: Next.js 15 (App Router), TypeScript, Tailwind CSS, Shadcn/ui, Supabase (PostgreSQL), Drizzle ORM.
+
+# Coding Standards & Guidelines
+
+## 1. General Philosophy
+- **Type Safety First:** Strictly use TypeScript. No `any` types. Use `unknown` if necessary and narrow it down.
+- **Functional Programming:** Prefer functional components and hooks over classes.
+- **Server Components by Default:** Use React Server Components (RSC) for data fetching. Only use `'use client'` for interactivity.
+
+## 2. Directory Structure (Next.js App Router)
+- `/app`: Pages and layouts.
+- `/components`: Reusable UI components (shadcn/ui goes here).
+- `/lib`: Utility functions, database clients.
+- `/db`: Database schema (Drizzle).
+- `/actions`: Server Actions for mutations (create/update/delete).
+- `/types`: Global type definitions (if not inferred).
+
+## 3. Data Fetching & Mutation
+- **Fetching:** Use standard `fetch` or Drizzle queries directly in Server Components.
+- **Mutation:** MUST use **Server Actions** (`use server`) for all form submissions and data modifications. DO NOT use API routes (`/pages/api`) unless absolutely necessary (e.g., Webhooks).
+- **Validation:** Use **Zod** to validate ALL inputs in Server Actions before processing.
+
+## 4. UI/UX Guidelines
+- Use **Tailwind CSS** for styling. Avoid CSS modules unless for complex animations.
+- Use **Shadcn/ui** components. If a component is missing, ask to install it via CLI.
+- Ensure **Responsive Design** (Mobile First).
+- Implement **Loading States** (Skeletons) and **Error Boundaries** for better UX.
+
+## 5. Security & Performance
+- Never expose API keys or secrets in the client-side code.
+- Use environment variables (`process.env`) for configuration.
+- Optimize images using `next/image`.
+
+## 6. AI Behavior
+- When generating code, prioritize readability and maintainability.
+- If a solution requires a new library, suggest it first and explain why.
+- Always add JSDoc comments for complex logic.

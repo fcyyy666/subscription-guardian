@@ -1,0 +1,40 @@
+import { type NextRequest } from 'next/server';
+import { updateSession } from '@/utils/supabase/middleware';
+import { NextResponse } from 'next/server';
+
+export async function middleware(request: NextRequest) {
+  const { supabaseResponse, user } = await updateSession(request);
+
+  // Protect /dashboard routes - redirect to /login if not authenticated
+  if (request.nextUrl.pathname.startsWith('/dashboard')) {
+    if (!user) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/login';
+      return NextResponse.redirect(url);
+    }
+  }
+
+  // Redirect to /dashboard if already authenticated and trying to access /login or /signup
+  if (request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/signup') {
+    if (user) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/dashboard';
+      return NextResponse.redirect(url);
+    }
+  }
+
+  return supabaseResponse;
+}
+
+export const config = {
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * Feel free to modify this pattern to include more paths.
+     */
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
+};

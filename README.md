@@ -21,3 +21,24 @@
 * **ORM:** [Drizzle ORM](https://orm.drizzle.team/)
 * **样式与组件:** [Tailwind CSS](https://tailwindcss.com/) + [Shadcn/ui](https://ui.shadcn.com/)
 * **验证:** [Zod](https://zod.dev/) + React Hook Form
+
+## 🚀 本地开发指南 (Getting Started)
+
+1. **克隆项目:**
+   ```bash
+   git clone [https://github.com/你的用户名/subscription-guardian.git](https://github.com/你的用户名/subscription-guardian.git)
+   cd subscription-guardian
+
+2. 安装依赖:
+   npm install
+
+3. 配置环境变量:
+   在根目录创建 .env.local 文件，并填入你的 Supabase 凭证：
+
+   NEXT_PUBLIC_SUPABASE_URL=你的_SUPABASE_URL
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=你的_SUPABASE_ANON_KEY
+
+4. 启动服务:
+   npm run dev
+
+在浏览器中访问 http://localhost:3000 即可预览项目。

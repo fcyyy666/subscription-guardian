@@ -3,6 +3,7 @@
 import { useTransition } from 'react';
 import { deleteSubscription } from '@/actions/subscriptions';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 interface DeleteSubscriptionButtonProps {
     subscriptionId: string;
@@ -21,7 +22,9 @@ export default function DeleteSubscriptionButton({ subscriptionId }: DeleteSubsc
         startTransition(async () => {
             const result = await deleteSubscription(subscriptionId);
             if (result?.error) {
-                alert(result.error);
+                toast.error('删除失败', { description: result.error });
+            } else {
+                toast.success('删除成功');
             }
         });
     };

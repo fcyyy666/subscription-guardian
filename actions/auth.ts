@@ -10,6 +10,10 @@ import { users } from '@/db/schema';
  * Login action
  * Authenticates user with email and password
  */
+/**
+ * Login action
+ * Authenticates user with email and password
+ */
 export async function login(formData: FormData) {
   const supabase = await createClient();
 
@@ -21,11 +25,11 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    redirect(`/login?error=${encodeURIComponent(error.message)}`);
+    return { error: error.message };
   }
 
   revalidatePath('/', 'layout');
-  redirect('/dashboard');
+  return { success: true };
 }
 
 /**
@@ -48,7 +52,7 @@ export async function signup(formData: FormData) {
   });
 
   if (authError) {
-    redirect(`/signup?error=${encodeURIComponent(authError.message)}`);
+    return { error: authError.message };
   }
 
   // Sync user data to public.users table
@@ -61,14 +65,13 @@ export async function signup(formData: FormData) {
         currencyPreference: 'CNY',
       });
     } catch (dbError) {
-      // If DB sync fails, we should handle it gracefully
       console.error('Failed to sync user to database:', dbError);
-      redirect(`/signup?error=${encodeURIComponent('Failed to create user profile. Please contact support.')}`);
+      return { error: 'Failed to create user profile. Please contact support.' };
     }
   }
 
   revalidatePath('/', 'layout');
-  redirect('/dashboard');
+  return { success: true };
 }
 
 /**

@@ -1,12 +1,41 @@
+'use client';
+
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { login } from '@/actions/auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ShieldCheck } from 'lucide-react';
+import { ShieldCheck, Loader2 } from 'lucide-react'; // Added Loader2
+import { toast } from 'sonner';
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    const formData = new FormData(e.currentTarget);
+    const result = await login(formData);
+
+    setIsLoading(false);
+
+    if (result?.error) {
+      toast.error('登录失败', {
+        description: '邮箱或密码不正确，请重试。'
+      });
+    } else {
+      toast.success('欢迎回来！', {
+        description: '正在跳转到仪表盘...'
+      });
+      router.push('/dashboard');
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#F5F5F7] p-4 text-zinc-900">
       <div className="absolute top-8 left-8">
@@ -23,7 +52,7 @@ export default function LoginPage() {
           <CardTitle className="text-2xl font-bold text-zinc-900">欢迎回来</CardTitle>
           <CardDescription className="text-zinc-500">登录您的 Subscription Guardian 账户</CardDescription>
         </CardHeader>
-        <form action={async (formData) => { 'use server'; await login(formData); }}>
+        <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email" className="text-zinc-700 font-medium">邮箱地址</Label>
@@ -52,8 +81,18 @@ export default function LoginPage() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4 pt-2">
-            <Button type="submit" className="w-full bg-zinc-900 text-white hover:bg-zinc-800 transition-all h-10 font-medium shadow-md">
-              立即登录
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-zinc-900 text-white hover:bg-zinc-800 transition-all h-10 font-medium shadow-md"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> 登录中...
+                </>
+              ) : (
+                '立即登录'
+              )}
             </Button>
             <p className="text-sm text-zinc-500 text-center">
               还没有账户？{' '}

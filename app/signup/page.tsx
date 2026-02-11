@@ -1,12 +1,41 @@
+'use client';
+
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { signup } from '@/actions/auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ShieldCheck } from 'lucide-react';
+import { ShieldCheck, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function SignupPage() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    const formData = new FormData(e.currentTarget);
+    const result = await signup(formData);
+
+    setIsLoading(false);
+
+    if (result?.error) {
+      toast.error('注册失败', {
+        description: result.error
+      });
+    } else {
+      toast.success('注册成功！', {
+        description: '请使用新账户登录。'
+      });
+      router.push('/login');
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#F5F5F7] p-4 text-zinc-900">
       <div className="absolute top-8 left-8">
@@ -23,7 +52,7 @@ export default function SignupPage() {
           <CardTitle className="text-2xl font-bold text-zinc-900">创建账户</CardTitle>
           <CardDescription className="text-zinc-500">开始管理您的周期性订阅</CardDescription>
         </CardHeader>
-        <form action={async (formData) => { 'use server'; await signup(formData); }}>
+        <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="fullName" className="text-zinc-700 font-medium">姓名</Label>
@@ -60,8 +89,18 @@ export default function SignupPage() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4 pt-2">
-            <Button type="submit" className="w-full bg-zinc-900 text-white hover:bg-zinc-800 transition-all h-10 font-medium shadow-md">
-              注册账户
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-zinc-900 text-white hover:bg-zinc-800 transition-all h-10 font-medium shadow-md"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> 注册中...
+                </>
+              ) : (
+                '注册账户'
+              )}
             </Button>
             <p className="text-sm text-zinc-500 text-center">
               已有账户？{' '}

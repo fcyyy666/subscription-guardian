@@ -1,36 +1,30 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛡️ 订阅卫士 (Subscription Guardian)
 
-## Getting Started
+掌控你的订阅生活。极简设计，智能追踪，告别“订阅疲劳”。
 
-First, run the development server:
+这是一款采用 Apple 极简风格设计的全栈 SaaS 应用。它可以帮助用户轻松记录和管理所有的周期性支出（如流媒体、健身房、软件订阅等），并提供智能汇率换算、扣款日自动计算等高级功能。
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ 核心功能 (Features)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+* **极简操作体验：** 告别繁琐，秒级录入你的订阅服务。
+* **智能日期推算：** 根据“首次扣款日”和“计费周期”（月/年/周），系统自动精准计算出你的**下一笔待付**日期。
+* **多币种与实时汇率：** 支持输入外币（如 USD, EUR），系统会自动通过汇率 API 实时将其换算为人民币 (CNY) 进行统一展示和统计。
+* **无损暂停：** 订阅随时可以标记为“已暂停 (Paused)”，数据不会丢失，且不再计入本月支出总额，随时可恢复。
+* **全端响应式：** 采用自适应布局，无论在 PC 宽屏还是手机浏览器上，都能获得如同原生 App 般的丝滑体验。
+* **数据安全：** 基于强大的 Supabase Auth 提供银行级账号保护。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ 技术栈 (Tech Stack)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+* **框架:** [Next.js 15](https://nextjs.org/) (App Router, Server Actions)
+* **语言:** TypeScript
+* **数据库 & 认证:** [Supabase](https://supabase.com/) (PostgreSQL)
+* **ORM:** [Drizzle ORM](https://orm.drizzle.team/)
+* **样式与组件:** [Tailwind CSS](https://tailwindcss.com/) + [Shadcn/ui](https://ui.shadcn.com/)
+* **验证:** [Zod](https://zod.dev/) + React Hook Form
 
-## Learn More
+## 🚀 本地开发指南 (Getting Started)
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **克隆项目:**
+   ```bash
+   git clone [https://github.com/你的用户名/subscription-guardian.git](https://github.com/你的用户名/subscription-guardian.git)
+   cd subscription-guardian

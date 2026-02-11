@@ -25,6 +25,11 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
+    console.error('------- SUPABASE LOGIN ERROR (VERCEL DEBUG) -------');
+    console.error('Error Object:', JSON.stringify(error, null, 2));
+    console.error('Error Message:', error.message);
+    console.error('Input Email:', data.email);
+    console.error('---------------------------------------------------');
     return { error: error.message };
   }
 
@@ -45,6 +50,11 @@ export async function signup(formData: FormData) {
     fullName: formData.get('fullName') as string,
   };
 
+  // DEBUG: Check environment variables
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+    console.error('CRITICAL: NEXT_PUBLIC_SUPABASE_URL is missing!');
+  }
+
   // Create user in Supabase Auth
   const { data: authData, error: authError } = await supabase.auth.signUp({
     email: data.email,
@@ -52,6 +62,12 @@ export async function signup(formData: FormData) {
   });
 
   if (authError) {
+    console.error('------- SUPABASE SIGNUP ERROR (VERCEL DEBUG) -------');
+    console.error('Error Object:', JSON.stringify(authError, null, 2));
+    console.error('Error Code:', authError.code);
+    console.error('Error Message:', authError.message);
+    console.error('Input Data (Masked):', { ...data, password: '***' });
+    console.error('----------------------------------------------------');
     return { error: authError.message };
   }
 

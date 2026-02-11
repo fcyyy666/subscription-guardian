@@ -25,12 +25,26 @@ export default function LoginPage() {
     setIsLoading(false);
 
     if (result?.error) {
-      toast.error('登录失败', {
-        description: '邮箱或密码不正确，请重试。'
+      let title = '🤔 登录失败';
+      let description = '请检查邮箱和密码';
+
+      if (result.error.includes('Invalid login credentials')) {
+        description = '邮箱或密码不太对哦，请再检查一下。';
+      } else if (result.error.includes('Email not confirmed')) {
+        title = '📫 账号未激活';
+        description = '账号还没激活呢，请去邮箱点一下验证链接哦！';
+      } else {
+        description = result.error;
+      }
+
+      toast.error(title, {
+        description: description,
+        duration: 5000,
       });
     } else {
-      toast.success('欢迎回来！', {
-        description: '正在跳转到仪表盘...'
+      toast.success('👋 欢迎回来！', {
+        description: '正在加载你的订阅全貌...',
+        duration: 3000,
       });
       router.push('/dashboard');
     }

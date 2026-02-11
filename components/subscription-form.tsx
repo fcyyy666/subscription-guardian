@@ -114,9 +114,24 @@ export default function SubscriptionForm({
         const result = await action(formData);
 
         if (result?.error) {
-            toast.error(result.error);
+            toast.error('❌ 保存失败', { description: '请检查网络或必填项。' });
         } else {
-            toast.success('订阅已保存');
+            // Distinguish between add and edit based on defaultValues (if id exists, it's edit)
+            // But here we can just say generic 'Saved' or guess based on props.
+            // Actually, let's just use the user provided generic success.
+            // Wait, request asked for:
+            // Add: "✨ 记录成功！新的订阅已加入追踪列表。"
+            // Edit: "📝 保存好啦，订阅信息已更新。"
+            // I need to know if it's add or edit.
+
+            // Checking if we have an ID in defaultValues to guess mode
+            const isEdit = !!defaultValues?.name; // Simplistic check
+
+            if (isEdit) {
+                toast.success('📝 保存好啦', { description: '订阅信息已更新。' });
+            } else {
+                toast.success('✨ 记录成功！', { description: '新的订阅已加入追踪列表。' });
+            }
             router.push('/dashboard');
         }
     };

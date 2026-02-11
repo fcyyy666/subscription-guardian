@@ -7,28 +7,28 @@ import { z } from 'zod';
 export const subscriptionFormSchema = z.object({
     name: z
         .string()
-        .min(1, '订阅名称不能为空')
-        .max(255, '订阅名称不能超过255个字符'),
+        .min(1, '请填写订阅名称，例如 "Netflix"')
+        .max(255, '名称太长啦，请精简一下'),
     amount: z
         .string()
-        .min(1, '金额不能为空')
+        .min(1, '别忘了输入金额哦')
         .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
-            message: '请输入有效的正数金额',
+            message: '金额必须是大于 0 的数字',
         }),
     currency: z.enum(['CNY', 'USD', 'EUR', 'JPY'], {
-        error: '请选择有效的币种',
+        message: '请选择一个有效币种',
     }),
     billingCycle: z.enum(['monthly', 'yearly', 'weekly'], {
-        error: '请选择有效的计费周期',
+        message: '请选择扣款周期',
     }),
     startDate: z
         .string()
-        .min(1, '请选择开始日期')
+        .min(1, '请选择首次扣款日期')
         .refine((val) => !isNaN(Date.parse(val)), {
-            message: '请输入有效的日期',
+            message: '日期格式好像不对哦',
         }),
     category: z.enum(['Entertainment', 'Tools', 'Utilities', 'Health'], {
-        error: '请选择有效的分类',
+        message: '请选择一个分类',
     }),
 });
 

@@ -22,9 +22,9 @@ export default function DeleteSubscriptionButton({ subscriptionId }: DeleteSubsc
         startTransition(async () => {
             const result = await deleteSubscription(subscriptionId);
             if (result?.error) {
-                toast.error('删除失败', { description: result.error });
+                toast.error('❌ 删除失败', { description: result.error });
             } else {
-                toast.success('删除成功');
+                toast.success('🗑️ 挥手告别', { description: '该记录已彻底清除。' });
             }
         });
     };

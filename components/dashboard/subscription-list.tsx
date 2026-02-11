@@ -59,16 +59,20 @@ export function SubscriptionList({ subscriptions }: Props) {
     const handleToggleStatus = async (id: string, currentStatus: 'active' | 'paused' | 'cancelled') => {
         const result = await toggleSubscriptionStatus(id, currentStatus);
         if (result.error) {
-            toast.error(result.error);
+            toast.error('❌ 操作失败', { description: '请重试，或检查网络连接。' });
         } else {
-            toast.success(currentStatus === 'active' ? '已暂停订阅' : '已恢复订阅');
+            if (currentStatus === 'active') {
+                toast.success('⏸️ 已暂停', { description: '该项目暂时不再计入本月总支出。' });
+            } else {
+                toast.success('▶️ 已恢复', { description: '该项目将重新计入计算。' });
+            }
             router.refresh();
         }
     };
 
     return (
-        <div className="rounded-2xl border border-zinc-100 bg-white shadow-sm overflow-hidden">
-            <div className="px-6 py-5 border-b border-zinc-50 flex justify-between items-center">
+        <div className="rounded-2xl border border-zinc-100 bg-white shadow-sm overflow-hidden overflow-x-auto">
+            <div className="px-6 py-5 border-b border-zinc-50 flex justify-between items-center min-w-[600px] sm:min-w-0">
                 <h3 className="text-lg font-semibold text-zinc-900">订阅列表</h3>
                 <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider">全部 {subscriptions.length} 项</span>
             </div>
@@ -89,7 +93,7 @@ export function SubscriptionList({ subscriptions }: Props) {
                     </Link>
                 </div>
             ) : (
-                <div className="divide-y divide-zinc-100">
+                <div className="divide-y divide-zinc-100 min-w-[600px] sm:min-w-0">
                     {subscriptions.map((sub) => {
                         const monthlyEquiv = getMonthlyEquivalentDisplay(sub.amount, sub.currency, sub.billingCycle);
                         const cnyDisplay = getCNYEquivalent(sub.amount, sub.exchangeRate, sub.currency);

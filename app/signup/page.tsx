@@ -25,13 +25,27 @@ export default function SignupPage() {
     setIsLoading(false);
 
     if (result?.error) {
-      toast.error('注册失败', {
-        description: result.error
+      let title = '❌ 注册遇到了点小麻烦';
+      let description = result.error;
+
+      // Map common Supabase/Auth errors
+      if (result.error.includes('User already registered') || result.error.includes('already exists')) {
+        title = '⚠️ 账号已存在';
+        description = '这个邮箱好像已经注册过了，直接去登录吧。';
+      } else {
+        description = '请稍后再试，或检查网络连接。';
+      }
+
+      toast.error(title, {
+        description: description,
+        duration: 5000,
       });
     } else {
-      toast.success('注册成功！', {
-        description: '请使用新账户登录。'
+      toast.success('🎉 注册成功！', {
+        description: '请前往邮箱点击验证链接，激活后即可登录。',
+        duration: 8000, // Longer duration for important instruction
       });
+      e.currentTarget.reset();
       router.push('/login');
     }
   };

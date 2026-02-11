@@ -81,7 +81,13 @@ export async function signup(formData: FormData) {
         currencyPreference: 'CNY',
       });
     } catch (dbError) {
-      console.error('Failed to sync user to database:', dbError);
+      console.error('------- DB SYNC ERROR (VERCEL DEBUG) -------');
+      console.error('Failed to sync user to public.users table.');
+      console.error('Error Details:', dbError);
+      console.error('User ID:', authData.user.id);
+      console.error('--------------------------------------------');
+      // OPTIONAL: You might want to delete the auth user if sync fails to maintain consistency
+      // await supabase.auth.admin.deleteUser(authData.user.id);
       return { error: 'Failed to create user profile. Please contact support.' };
     }
   }

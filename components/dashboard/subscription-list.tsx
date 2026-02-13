@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { format, formatDistanceToNow, parseISO } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import { Button } from '@/components/ui/button';
-import { BrandIcon } from '@/components/brand-icon';
+import { SubscriptionIcon } from '@/components/ui/subscription-icon';
 import DeleteSubscriptionButton from '@/components/delete-subscription-button';
 import { Sparkles, PauseCircle, PlayCircle } from 'lucide-react';
 import { CURRENCY_SYMBOLS, CATEGORY_LABELS } from '@/lib/constants';
@@ -107,7 +107,7 @@ export function SubscriptionList({ subscriptions }: Props) {
                             >
                                 <div className="flex items-center gap-4 overflow-hidden">
                                     <div className="opacity-100">
-                                        <BrandIcon name={sub.name} />
+                                        <SubscriptionIcon category={sub.category} />
                                     </div>
 
                                     <div className="min-w-0 flex-1">

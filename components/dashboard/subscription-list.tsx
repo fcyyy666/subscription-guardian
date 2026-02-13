@@ -151,9 +151,9 @@ export function SubscriptionList({ subscriptions }: Props) {
                                             </span>
                                         </div>
 
-                                        {cnyDisplay && (
+                                        {cnyDisplay && sub.currency !== 'CNY' && (
                                             <div className="text-xs font-medium text-zinc-400">
-                                                {CURRENCY_SYMBOLS[sub.currency]}{sub.amount}
+                                                {sub.currency} {sub.amount}
                                             </div>
                                         )}
 

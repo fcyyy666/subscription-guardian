@@ -42,12 +42,32 @@ export default async function DashboardPage() {
 
     // Transform for component if needed, or pass full object
     // OverviewCards expects specific shape
-    const nextPayment = futurePayments[0] ? {
-        name: futurePayments[0].name,
-        amount: futurePayments[0].amount,
-        currency: futurePayments[0].currency,
-        nextPaymentDate: futurePayments[0].nextPaymentDate,
-    } : null;
+    // 4. Transform for component - Calculate Total in CNY for the nearest date
+    let nextPayment = null;
+    if (futurePayments.length > 0) {
+        const nearestDate = futurePayments[0].nextPaymentDate;
+        // Find all payments due on this same date
+        const paymentsOnSameDay = futurePayments.filter(p => p.nextPaymentDate === nearestDate);
+        
+        // Sum their converted CNY amounts
+        const totalCNY = paymentsOnSameDay.reduce((sum, p) => {
+            const rate = p.exchangeRate ? parseFloat(p.exchangeRate) : 1; // Fallback to 1 if missing, though schema enforces it
+            const amount = parseFloat(p.amount);
+            return sum + (amount * rate);
+        }, 0);
+
+        // Determine display name
+        const name = paymentsOnSameDay.length > 1 
+            ? `${paymentsOnSameDay[0].name} 等 ${paymentsOnSameDay.length} 项`
+            : paymentsOnSameDay[0].name;
+
+        nextPayment = {
+            name: name,
+            amount: totalCNY.toFixed(2),
+            currency: 'CNY', // Force CNY as requested
+            nextPaymentDate: nearestDate,
+        };
+    }
 
     return (
         <div className="space-y-8 animate-in fade-in duration-500">

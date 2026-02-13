@@ -16,7 +16,8 @@
       "Bash(findstr:*)",
       "Bash(dir:*)",
       "Bash(\"./e:/Subscription Guardian/start.bat\")",
-      "Bash(npm run build)"
+      "Bash(npm run build)",
+      "Bash(setx ANTHROPIC_AUTH_TOKEN \"\")"
     ]
   }
 }

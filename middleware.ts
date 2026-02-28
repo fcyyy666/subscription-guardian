@@ -29,12 +29,11 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * Feel free to modify this pattern to include more paths.
+     * 明确指定只拦截需要鉴权的路由，避免全局拦截
+     * 这样首页 '/' 或其他公开页面就不会触发耗时的 Supabase 验证
      */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/dashboard/:path*', 
+    '/login',
+    '/signup'
   ],
 };
